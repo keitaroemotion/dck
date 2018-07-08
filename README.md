@@ -4,7 +4,7 @@ dck
 easy alias script to make docker command more easy to use.
 
 
-unstallation
+installation
 ------
 
 ```
