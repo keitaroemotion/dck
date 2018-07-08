@@ -19,7 +19,7 @@ usage
 
 ```
 $ dck -h
-
+```
 
 ### kill docker image with image id
 
