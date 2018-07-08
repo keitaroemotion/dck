@@ -1,0 +1,54 @@
+#!/usr/bin/env ruby
+
+
+def subprocess(cmd)
+    return `#{cmd}`
+end
+
+def grep_images(kw)
+    return subprocess("docker image ls | grep #{kw}")
+end
+
+def images
+    return subprocess("docker image ls")
+end
+
+def image_id(out_string)
+    return out_string.split("\n").map{|line| line.split("\s")[2] }
+end
+
+def kill_image_by_image_id(image_id)
+    system("docker rmi #{image_id}")
+end
+
+def options
+    ARGV.select { |a| a.start_with?("-") }
+end
+
+def args
+    ARGV.select { |a| !a.start_with?("-") }
+end
+
+def show_help
+    puts
+    puts "dck -k [image_id] ... kill docker image with image id(this image can be partial)"    
+    puts "dck -l [keyword]  ... show docker images with keyword"    
+    puts
+end
+
+option = options[0]
+
+case option
+when "--help", "-h"
+    show_help
+when "-k"
+    args.each do |arg|
+        kill_image_by_image_id(arg)
+    end
+when "-l"
+    args[0] || abort("\nyou need argument\n\n")
+    puts grep_images(args[0])
+else
+    show_help
+end
+
